@@ -2,3 +2,4 @@
 .project
 .pydevproject
 **/GameResult.txt
+**/*.pyc
