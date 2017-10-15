@@ -8,8 +8,7 @@ import turtle
 class snake:
     snakeBounds = 10
 
-    def __init__(self, screen):
-        self._screen = screen
+    def __init__(self):
         self._turtle = turtle.Turtle()
         self._turtle.shapesize(2,2)
         self._turtle.penup()
