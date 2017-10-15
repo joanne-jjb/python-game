@@ -82,7 +82,7 @@ class game:
 
     ##game methods written sequentially, dictating game play
     def playgame(self):
-        #set up screen to show rules on
+        #set up screen to show rules
         self.__resetScreen(self._screen)
         cursor = self.__buildCursor()
         cursor.goto(0,-200)
@@ -144,6 +144,7 @@ class game:
         \    \_\  \/ __ \|  | |  \  ___/  /    |    \   /\  ___/|  | \/ 
          \______  (____  /__|_|  /\___  > \_______  /\_/  \___  >__|    
                 \/     \/      \/     \/          \/          \/      
+
         Your Final Score is: """
 
         outputString += str(self._totalScore)

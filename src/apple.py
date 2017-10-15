@@ -8,8 +8,10 @@ import turtle
 import random
 
 class apple:
+    #constant to define apple perimeter for scoring validation
     appleBounds = 25
 
+    #apples randomly place themselves
     def __init__(self):
         self._turtle = turtle.Turtle()
         self._turtle.hideturtle()
@@ -21,21 +23,26 @@ class apple:
         self._turtle.setposition(x,y)
         self._turtle.showturtle()
 
+    #helper methods to return coordinates as int
     def getx(self):
         return int(self._turtle.xcor())
 
     def gety(self):
         return int(self._turtle.ycor())
 
+    #APPLE MODULES
+
+    #determines if the snake ran into the apple
     def collide(self, x, y):
-        rangex = range((self.getx() - self.appleBounds), (self.getx() + self.appleBounds))
-        rangey = range((self.gety() - self.appleBounds), (self.gety() + self.appleBounds))
-        
+        applex = self.getx()
+        appley = self.gety()
+        rangex = range((applex - self.appleBounds), (applex + self.appleBounds))
+        rangey = range((appley - self.appleBounds), (appley + self.appleBounds))
         if ((x in rangex) and (y in rangey)):
             return True
-        
         return False
 
+    #apple removes itself from the game
     def destroy(self):
         self._turtle.hideturtle()
         self._turtle.clear()

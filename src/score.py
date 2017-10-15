@@ -7,9 +7,11 @@ Created on Oct 14, 2017
 import turtle
 
 class score:
+    #constants to define where the score is on the game screen
     x = 130
     y = 270
 
+    #creates itself on the screen on init
     def __init__(self):
         self._turtle = turtle.Turtle()
         self._turtle.hideturtle()
@@ -18,15 +20,17 @@ class score:
         self._value = 0
         self.__writeScore()
 
+    #returns itself for printing
     def __str__(self):
         return str(self._value)
 
+    #maintains itself based on points passed as parameters
     def increase(self, points):
         self._value += points
         self.__writeScore()
-    
+
     def __writeScore(self):
         self._turtle.clear()
         self._turtle.setposition(self.x, self.y)
         displayString = "Your Current Score Is: "
-        self._turtle.write(displayString + str(self._value), True, align="center", font=("Courier", 20, "normal"))
+        self._turtle.write(displayString + str(self), True, align="center", font=("Courier", 20, "normal"))
