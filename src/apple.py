@@ -8,7 +8,7 @@ import turtle
 import random
 
 class apple:
-    appleBounds = 10
+    appleBounds = 25
 
     def __init__(self):
         self._turtle = turtle.Turtle()
@@ -16,8 +16,8 @@ class apple:
         self._turtle.speed(0)
         self._turtle.shape("apple.gif")
         self._turtle.penup()
-        x = int(random.randint(-390, 390) / 10) * 10
-        y = int(random.randint(-390, 390) / 10) * 10
+        x = int(random.randint(-250, 250) / 10 ) * 10
+        y = int(random.randint(-250, 250) / 10) * 10
         self._turtle.setposition(x,y)
         self._turtle.showturtle()
 

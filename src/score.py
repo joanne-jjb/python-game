@@ -7,8 +7,8 @@ Created on Oct 14, 2017
 import turtle
 
 class score:
-    x = 270
-    y = 380
+    x = 130
+    y = 270
 
     def __init__(self):
         self._turtle = turtle.Turtle()
@@ -29,6 +29,4 @@ class score:
         self._turtle.clear()
         self._turtle.setposition(self.x, self.y)
         displayString = "Your Current Score Is: "
-        self._turtle.write(displayString + str(self._value), True, align="center", font=("Courier", 18, "normal"))
-
-        
+        self._turtle.write(displayString + str(self._value), True, align="center", font=("Courier", 20, "normal"))

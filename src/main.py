@@ -15,11 +15,10 @@ from score import score
 #Constants
 screenColor = "light green"
 maxApples = 2
-gameSpeed = 100
+gameSpeed = 50
 appleValue = 1
 appleBonus = 10
-apples = []
-applesToSpawn = maxApples
+screensize = 400
 
 #Modules
 def displayGameRules():
@@ -68,15 +67,22 @@ def buildPlayArea():
     cursor.penup()
     cursor.hideturtle()
     cursor.goto(0,-200)
-    cursor.write(displayGameRules(), True, align="center", font=("Courier", 18, "normal"))
+    cursor.write(displayGameRules(), True, align="center", font=("Courier", 12, "normal"))
     screen.onkey(initGame, "Return")
-    screen.onkey(endgame, "Escape")
+    screen.onkey(closegame, "Escape")
     screen.listen()
 
 def initGame():
     global screen
     global player
-    global score
+    global totalScore
+    global gameOver
+    global apples
+    global applesToSpawn
+
+    apples = []
+    applesToSpawn = maxApples
+    gameOver = False
 
     screen.clear()
     screen.bgcolor(screenColor)
@@ -88,7 +94,7 @@ def initGame():
     screen.onkey(player.left, "Left")
     screen.onkey(player.right, "Right")
     generateApples()
-    score = score()
+    totalScore = score()
 
     gameloop()
     
@@ -97,25 +103,39 @@ def gameplay():
 
 def gameloop():
     global player
+    global gameOver
+
     player.move()
+    if (player.collide(player.getx(), player.gety()) or wallCollision(player.getx(), player.gety())):
+        gameOver = True
     checkForApples()
     generateApples()
-    screen.ontimer(gameloop, gameSpeed)
+    if not gameOver:
+        screen.ontimer(gameloop, gameSpeed)
+    else:
+        endgame()
+
+def wallCollision(x, y):
+    wallRange = range(-screensize, screensize)
+    if (x not in wallRange or y not in wallRange):
+        return True
+    return False
 
 def checkForApples():
     global apples
     global player
-    global score
+    global totalScore
     global applesToSpawn
 
     for apple in apples:
         if(apple.collide(player.getx(), player.gety())):
-            score.increase(appleValue)
+            totalScore.increase(appleValue)
             apples.remove(apple)
             apple.destroy()
+            player.grow()
 
     if(len(apples) == 0):
-        score.increase(appleBonus)
+        totalScore.increase(appleBonus)
         applesToSpawn = maxApples
 
 def generateApples():
@@ -128,12 +148,41 @@ def generateApples():
 
 def endgame():
     global screen
-    global score
+    global totalScore
+    
+    outputString = """
+      ________                        ________                      
+     /  _____/_____    _____   ____   \_____  \___  __ ___________  
+    /   \  ___\__  \  /     \_/ __ \   /   |   \  \/ // __ \_  __ \ 
+    \    \_\  \/ __ \|  | |  \  ___/  /    |    \   /\  ___/|  | \/ 
+     \______  (____  /__|_|  /\___  > \_______  /\_/  \___  >__|    
+            \/     \/      \/     \/          \/          \/      
+    Your Final Score is: """
+    
+    outputString += str(totalScore)
 
-    print("Anything")
+    outputString += """
+    A summary of your game has been saved to file "GameResult.txt"
+    
+    Press "Enter" to begin the game or "Esc" to Exit
+    """
+
+    screen.clear()
+    screen.bgcolor(screenColor)
+    screen.screensize(400,400)
+    cursor = turtle.Turtle()
+    cursor.penup()
+    cursor.hideturtle()
+    cursor.goto(0, 0)
+    cursor.write(outputString, True, align="center", font=("Courier", 12, "normal"))
     outputFile = open("GameResult.txt", "w+")
-    outputFile.write("Your Score is: " + str(score))
+    outputFile.write("Your Final Score was: " + str(totalScore))
     outputFile.close()
+    screen.onkey(initGame, "Return")
+    screen.onkey(closegame, "Escape")
+    screen.listen()
+
+def closegame():
     screen.bye()
 
 def main():
