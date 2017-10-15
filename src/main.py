@@ -7,34 +7,32 @@ Final Project
 '''
 
 #Imports
-import random
 import turtle
+from snake import snake
+from apple import apple
+from score import score
 
 #Constants
-screen = None
-maxApple = 10
-score = 0
-applesConsumed = 0
-
-snakeSegments = []
-appleLocations = []
-currentlyFacing = "s"
-currentPosition = []
-endGameOutput = ""
-foundApples = []
+screenColor = "light green"
+maxApples = 2
+gameSpeed = 100
+appleValue = 1
+appleBonus = 10
+apples = []
+applesToSpawn = maxApples
 
 #Modules
 def displayGameRules():
     rulesString = """
     __________          __  .__                      ________                       
     \______   \___.__._/  |_|  |__   ____   ____    /  _____/_____    _____   ____  
-    |     ___<   |  |\   __\  |  \ /  _ \ /    \  /   \  ___\__  \  /     \_/ __ \  
-    |    |    \___  | |  | |   Y  (  <_> )   |  \ \    \_\  \/ __ \|  Y Y  \  ___/  
+    |     ___<   |  |\   __\     \ /  _ \ /    \  /   \  ___\__  \  /     \_/ __ \  
+    |    |    \___  | |  | |   |  (  <_> )   |  \ \    \_\  \/ __ \|  | |  \  ___/  
     |____|    / ____| |__| |___|  /\____/|___|  /  \______  (____  /__|_|  /\___  > 
               \/                \/            \/          \/     \/      \/     \/
  
         Welcome to the Python Game!
-        Have you ever played \"Snake\"? It's exactly like that.
+        Have you ever played \"snake\"? It's exactly like that.
     
         #####################################################################
         #                          Playing the Game                         #
@@ -52,49 +50,94 @@ def displayGameRules():
                  - Your Score
                  - Where you found apples
                  - Image of your final screen
+    
+    
+    
+    
+                Press "Enter" to begin the game or "Esc" to Exit
     """
     return rulesString
 
 #Segments sections of the game into small, testable chunks
 def buildPlayArea():
-    screen = turtle.getscreen()
-    screen.bgcolor("light green")
+    global screen
+    screen = turtle.Screen()
+    screen.bgcolor(screenColor)
     screen.screensize(400,400)
-    cursor = turtle.getturtle()
+    cursor = turtle.Turtle()
     cursor.penup()
     cursor.hideturtle()
     cursor.goto(0,-200)
-
-
     cursor.write(displayGameRules(), True, align="center", font=("Courier", 18, "normal"))
-    
+    screen.onkey(initGame, "Return")
+    screen.onkey(endgame, "Escape")
     screen.listen()
-    return screen
 
-def initializeGame():
-    userInput = ""
-    while (userInput != "Y" and userInput != "N"):
-        userInput = raw_input("Would you like to play the \"Python Game\"? Type \"Y\" for \"Yes\" and \"N\" for \"No\": ")
-    if (userInput == "Y"):
-        gameplay()
-    if (userInput == "N"):
-        endgame()
+def initGame():
+    global screen
+    global player
+    global score
 
+    screen.clear()
+    screen.bgcolor(screenColor)
+    screen.register_shape("apple.gif")
+    screen.onkey(endgame, "Escape")
+    player = snake(screen)
+    screen.onkey(player.up, "Up")
+    screen.onkey(player.down, "Down")
+    screen.onkey(player.left, "Left")
+    screen.onkey(player.right, "Right")
+    generateApples()
+    score = score()
+
+    gameloop()
+    
 def gameplay():
     generateApples()
 
+def gameloop():
+    global player
+    player.move()
+    checkForApples()
+    generateApples()
+    screen.ontimer(gameloop, gameSpeed)
+
+def checkForApples():
+    global apples
+    global player
+    global score
+    global applesToSpawn
+
+    for apple in apples:
+        if(apple.collide(player.getx(), player.gety())):
+            score.increase(appleValue)
+            apples.remove(apple)
+            apple.destroy()
+
+    if(len(apples) == 0):
+        score.increase(appleBonus)
+        applesToSpawn = maxApples
+
 def generateApples():
-    random.randint(0, 5)
+    global apples
+    global applesToSpawn
+
+    if(applesToSpawn > 0):
+        apples.append(apple())
+        applesToSpawn -= 1
 
 def endgame():
+    global screen
+    global score
+
+    print("Anything")
     outputFile = open("GameResult.txt", "w+")
     outputFile.write("Your Score is: " + str(score))
     outputFile.close()
+    screen.bye()
 
 def main():
-    screen = buildPlayArea()
-    displayGameRules()
-#    initializeGame()
+    buildPlayArea()
     turtle.done()
 
 main()
