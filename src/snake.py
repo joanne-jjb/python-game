@@ -45,12 +45,12 @@ class snake:
     #creates the image of the snake moving throughout the game
     #stamps the head, pops the last segment
     def move(self):
+        self._turtle.forward(20)
+        self._turtle.stamp()
         self._body.insert(0, self._turtle.position())
         if (len(self._body) > self._bodyLength): 
             self._turtle.clearstamps(1)
             self._body.pop()
-        self._turtle.forward(20)
-        self._turtle.stamp()
 
     #manages how "long" the snake can be, otherwise snake will grow forever
     def grow(self):
@@ -58,7 +58,8 @@ class snake:
 
     #manages if the snake ran into itself
     def collide(self, x, y):
-        for location in self._body:
+        for i in range(1, len(self._body)):
+            location = self._body[i]
             segmentx = int(location[0])
             segmenty = int(location[1])
             rangex = range((segmentx - self.snakeBounds), (segmentx + self.snakeBounds))
