@@ -103,7 +103,6 @@ class game:
         #set-up screen
         self.__resetScreen(self._screen)
         self._screen.register_shape("apple.gif")
-        self._screen.onkey(self.__endgame, "Escape")
 
         #register keystrokes
         self._player = snake()
