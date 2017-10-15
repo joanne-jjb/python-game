@@ -13,8 +13,8 @@ from game import game
 #commands to start game
 def main():
     screen = turtle.Screen()
-    snakeGame = game(screen)
-    snakeGame.playgame()
+    pythonGame = game(screen)
+    pythonGame.playgame()
     turtle.done()
 
 main()
