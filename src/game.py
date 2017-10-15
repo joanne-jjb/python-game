@@ -25,6 +25,7 @@ class game:
         self._player = None
         self._totalScore = None
         self._applesToSpawn = 0
+        self._queuedCommand = None
 
     #re-usable private methods used throughout the game
     def __buildCursor(self):
@@ -106,10 +107,10 @@ class game:
 
         #register keystrokes
         self._player = snake()
-        self._screen.onkey(self._player.up, "Up")
-        self._screen.onkey(self._player.down, "Down")
-        self._screen.onkey(self._player.left, "Left")
-        self._screen.onkey(self._player.right, "Right")
+        self._screen.onkey(self.__queueUp, "Up")
+        self._screen.onkey(self.__queueDown, "Down")
+        self._screen.onkey(self.__queueLeft, "Left")
+        self._screen.onkey(self.__queueRight, "Right")
 
         #generate apples and score tracking
         self.__generateApples()
@@ -118,8 +119,24 @@ class game:
         #begin game
         self.__gameloop()
 
+    def __queueUp(self):
+        self._queuedCommand = self._player.up
+
+    def __queueDown(self):
+        self._queuedCommand = self._player.down
+
+    def __queueLeft(self):
+        self._queuedCommand = self._player.left
+
+    def __queueRight(self):
+        self._queuedCommand = self._player.right
+
     def __gameloop(self):
         #body of the gameplay
+        if(self._queuedCommand):
+            self._queuedCommand()
+            self._queuedCommand = None
+            
         self._player.move()
 
         #check for collisions/check for lose conditions
