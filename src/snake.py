@@ -45,12 +45,12 @@ class snake:
     #creates the image of the snake moving throughout the game
     #stamps the head, pops the last segment
     def move(self):
-        self._turtle.stamp()
         self._body.insert(0, self._turtle.position())
         if (len(self._body) > self._bodyLength): 
             self._turtle.clearstamps(1)
             self._body.pop()
         self._turtle.forward(20)
+        self._turtle.stamp()
 
     #manages how "long" the snake can be, otherwise snake will grow forever
     def grow(self):
