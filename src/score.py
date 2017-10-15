@@ -8,8 +8,8 @@ import turtle
 
 class score:
     #constants to define where the score is on the game screen
-    x = 130
-    y = 270
+    x = 210
+    y = 300
 
     #creates itself on the screen on init
     def __init__(self):

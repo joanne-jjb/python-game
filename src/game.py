@@ -12,9 +12,9 @@ from apple import apple
 class game:
     #Adjustment variables to customize the game
     screenColor = "light green"
-    fontStyle = ("Courier","12")
+    fontStyle = ("Courier","14")
     maxApples = 10
-    screensize = 400
+    screensize = 800
     appleValue = 1
     appleBonus = 10
     gameSpeed = 50
@@ -36,7 +36,7 @@ class game:
     def __resetScreen(self, screen):
         screen.clear()
         screen.bgcolor(self.screenColor)
-        screen.screensize(self.screensize, self.screensize)
+        screen.setup(self.screensize, self.screensize)
 
     def __loadRules(self):
         rulesString = """
@@ -173,8 +173,9 @@ class game:
 
     def __wallCollision(self, x, y):
         #check to see if the snake hit the wall
-        wallRange = range(-self.screensize, self.screensize)
-        if(x not in wallRange or y not in wallRange):
+        wallRangey = range(((-self.screensize / 2) - 40), ((self.screensize / 2) - 40))
+        wallRangex = range((-self.screensize / 2), (self.screensize / 2))
+        if(x not in wallRangex or y not in wallRangey):
             return True
         return False
 

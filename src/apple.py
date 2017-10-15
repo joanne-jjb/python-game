@@ -11,6 +11,10 @@ class apple:
     #constant to define apple perimeter for scoring validation
     appleBounds = 25
 
+    #determine bounds of where apples can spawn
+    appleLoc = 600 / 2
+    appleInc = 10
+
     #apples randomly place themselves
     def __init__(self):
         self._turtle = turtle.Turtle()
@@ -18,8 +22,8 @@ class apple:
         self._turtle.speed(0)
         self._turtle.shape("apple.gif")
         self._turtle.penup()
-        x = int(random.randint(-250, 250) / 10 ) * 10
-        y = int(random.randint(-250, 250) / 10) * 10
+        x = int(random.randint(-self.appleLoc, self.appleLoc ) / self.appleInc ) * self.appleInc
+        y = int(random.randint(-self.appleLoc, self.appleLoc ) / self.appleInc) * self.appleInc
         self._turtle.setposition(x,y)
         self._turtle.showturtle()
 
